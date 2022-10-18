@@ -15,6 +15,7 @@ public class AStarManager : MonoBehaviour
     Astar astar;
     BoundsInt bounds;
     private Rigidbody2D _enemyRigidbody2D;
+    private Vector2Int _currentTarget;
 
     // private Vector3Int GridPositionOfMouse3D
     // {
@@ -70,21 +71,15 @@ public class AStarManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            MoveToPlayer();
-        }
-    }
-
-    private void MoveToPlayer()
+    public void MoveToPlayer()
     {
         // Debug.Log("Moving to player");
         var path = astar.CreatePath(walkableArea, GridPositionOfCharacter, GridPositionOfPlayer2D);
-        // Debug.Log(path);
-        if (path != null)
+        Debug.Log(GridPositionOfPlayer2D != _currentTarget);
+        if (path != null && (GridPositionOfPlayer2D != _currentTarget || _currentTarget == null))
         {
+            StopAllCoroutines();
+            _currentTarget = GridPositionOfPlayer2D;
             StartCoroutine(MoveToTarget(path));
         }
     }
@@ -96,9 +91,8 @@ public class AStarManager : MonoBehaviour
             var target = new Vector3(step.X + 0.5f, step.Y + 0.5f, 0f);
             var deltaTarget = target - transform.position;
             
-            
             // Set tank angle
-            var targetDirection = deltaTarget.normalized; Debug.Log(targetDirection);
+            var targetDirection = deltaTarget.normalized;
             var targetAngle = unitToSquare(targetDirection);
             
             var directionDifference = targetDirection - transform.up;
@@ -152,7 +146,7 @@ public class AStarManager : MonoBehaviour
         else if ((direction - transform.up).magnitude > 1.9) angle = 180;
         else if ((direction - transform.right).magnitude < 0.1) angle = 90;
         else if ((direction - transform.right).magnitude > 1.9) angle = -90;
-        else Debug.Log("ERROR SETTING TANK AGNLE");
+        // else Debug.Log("ERROR SETTING TANK AGNLE");
         return angle;
     }
 }
