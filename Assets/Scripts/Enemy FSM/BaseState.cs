@@ -17,4 +17,20 @@ public class BaseState
     public virtual void UpdateLogic() { }
     public virtual void UpdatePhysics() { }
     public virtual void Exit() { }
+
+    protected void MoveOrFire(EnemyFSM fsm)
+    {
+        var vectorToPlayer = PlayerController2D.Instance.transform.position - fsm.transform.position;
+        if (Vector3.Angle(vectorToPlayer, fsm.transform.up) < 45)
+        {
+            if (vectorToPlayer.magnitude < fsm.range)
+            {
+                stateMachine.ChangeState(fsm.firingState);
+            }
+            else
+            {
+                stateMachine.ChangeState(fsm.movingState);
+            }
+        }
+    }
 }

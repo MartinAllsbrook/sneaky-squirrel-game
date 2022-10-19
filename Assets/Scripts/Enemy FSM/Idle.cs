@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class Idle : BaseState
 {
-    private EnemyFSM _stateMachine;
+    private EnemyFSM _enemyFSM;
     
     public Idle(EnemyFSM stateMachine) : base("Idle", stateMachine) {
-        _stateMachine = stateMachine;
+        _enemyFSM = stateMachine;
+    }
+    
+    public override void UpdateLogic()
+    {
+        // Debug.Log("idle update");
+        base.UpdateLogic();
+        MoveOrFire(_enemyFSM);
     }
 }

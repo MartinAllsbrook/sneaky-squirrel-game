@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -16,15 +17,6 @@ public class AStarManager : MonoBehaviour
     BoundsInt bounds;
     private Rigidbody2D _enemyRigidbody2D;
     private Vector2Int _currentTarget;
-
-    // private Vector3Int GridPositionOfMouse3D
-    // {
-    //     get
-    //     {
-    //         return walkableTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-    //     }
-    // }
-    // private Vector2Int GridPositionOfMouse2D => (Vector2Int)GridPositionOfMouse3D;
 
     private Vector3Int GridPositionOfPlayer3D
     {
@@ -69,6 +61,18 @@ public class AStarManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public List<Spot> GetPath()
+    {
+        return astar.CreatePath(walkableArea, GridPositionOfCharacter, GridPositionOfPlayer2D);
+    }
+
+    public Vector3 GetNextLocation()
+    {
+        var path = astar.CreatePath(walkableArea, GridPositionOfCharacter, GridPositionOfPlayer2D);
+        var firstStep = path[1];
+        return new Vector3(firstStep.X + 0.5f, firstStep.Y + 0.5f, 0);
     }
 
     public void MoveToPlayer()

@@ -6,6 +6,8 @@ public class StateMachine : MonoBehaviour
 {
     BaseState currentState;
 
+    public float range;
+
     void Start()
     {
         currentState = GetInitialState();

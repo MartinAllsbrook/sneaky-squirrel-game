@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Moving : BaseState
+public class Firing : BaseState
 {
     private EnemyFSM _enemyFSM;
 
-    public UnityEvent MoveEvent;
-    private bool _doneMoving = false;
-    public bool DoneMoving
+    public UnityEvent FireEvent;
+    private bool _doneFiring = false;
+    public bool DoneFiring
     {
-        get { return _doneMoving; }
-        set { _doneMoving = value; }
+        private get { return _doneFiring; }
+        set { _doneFiring = value; }
     }
-    public Moving(EnemyFSM stateMachine) : base("Moving", stateMachine) {
+
+    public Firing(EnemyFSM stateMachine) : base("Firing", stateMachine) {
         _enemyFSM = stateMachine;
-        if(MoveEvent == null) MoveEvent = new UnityEvent();
+        if(FireEvent == null) FireEvent = new UnityEvent();
     }
 
     public override void Enter()
     {
+        _doneFiring = false;
         base.Enter();
-        _doneMoving = false;
-        MoveEvent.Invoke();
+        FireEvent.Invoke(); // Call fire event to start firing routine
     }
 
     public override void UpdateLogic()
     {
-        base.UpdateLogic();
-        if (_doneMoving)
+        base.UpdateLogic(); // Call original
+        if (_doneFiring)
         {
             var vectorToPlayer = PlayerController2D.Instance.transform.position - _enemyFSM.transform.position;
             if (Vector3.Angle(vectorToPlayer, _enemyFSM.transform.up) < 45)
