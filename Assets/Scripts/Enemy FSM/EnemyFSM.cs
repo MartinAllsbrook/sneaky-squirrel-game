@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyFSM : StateMachine
 {
+    [SerializeField] public EnemyController enemyController;
     [HideInInspector] public Idle idleState;
     [HideInInspector] public Moving movingState;
     [HideInInspector] public Firing firingState;

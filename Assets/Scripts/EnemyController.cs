@@ -56,6 +56,7 @@ public class EnemyController : MonoBehaviour
     
     IEnumerator FireAtPlayer()
     {
+        enemyFSM.movingState.NotMoving = false;
         // Warm up & turn
         // Debug.Log("Entered Fire");
         yield return new WaitForSeconds(0.25f);
@@ -67,22 +68,28 @@ public class EnemyController : MonoBehaviour
         
         // Cool Down
         enemyFSM.firingState.DoneFiring = true;
+        enemyFSM.movingState.NotMoving = true;
         // Debug.Log("Fire Coroutine over");
     }
 
 
     void OnMoveEvent()
     {
-        StartCoroutine(MoveOneUnit());
+        StartCoroutine(MoveOneUnit(enemyAStarManager.GetNextLocation()));
     }
 
-    IEnumerator MoveOneUnit()
+    public void MoveToLocation(Vector3 location)
+    {
+        StartCoroutine(MoveOneUnit(location));
+    }
+
+    IEnumerator MoveOneUnit(Vector3 location)
     {   
+        enemyFSM.movingState.NotMoving = false;
         // Rotate
-        var location = enemyAStarManager.GetNextLocation();
-        Debug.Log("Moving to: " + location);
+        // Debug.Log("Moving to: " + location);
         float angle = Mathf.Atan2(location.y - transform.position.y, location.x -transform.position.x ) * Mathf.Rad2Deg - 90;
-        Debug.Log(angle);
+        // Debug.Log(angle);
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
         // var q = Quaternion.LookRotation(location - transform.position);
         while (targetRotation.eulerAngles != transform.rotation.eulerAngles)
@@ -95,12 +102,12 @@ public class EnemyController : MonoBehaviour
 
         while (location != transform.position)
         {
-            Debug.Log("Moving");
+            // Debug.Log("Moving");
             transform.position = Vector3.MoveTowards(transform.position, location, moveSpeed);
             yield return new WaitForSeconds(0.1f);
         }
 
         // Move
-        enemyFSM.movingState.DoneMoving = true;
+        enemyFSM.movingState.NotMoving = true;
     }
 }
