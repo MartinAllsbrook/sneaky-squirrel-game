@@ -12,6 +12,7 @@ public class Idle : BaseState
     
     public Idle(EnemyFSM stateMachine) : base("Idle", stateMachine) {
         _enemyFSM = stateMachine;
+        // Debug.Log("Entered idle state");
     }
     
     public override void UpdateLogic()
@@ -22,11 +23,11 @@ public class Idle : BaseState
         {
             idleTimer = idleTime;
             // Move to random location
-            var location = _enemyFSM.transform.position + new Vector3(
-                Random.Range(-1, 2) + 0.5f,
-                Random.Range(-1, 2) + 0.5f,
+            var location = _enemyFSM.transform.position - new Vector3(
+                Random.Range(-1, 2),
+                Random.Range(-1, 2),
                 0f);
-            Debug.Log("Moving to: " + location);
+            // Debug.Log("Moving to: " + location);
 
             _enemyFSM.enemyController.MoveToLocation(location);
         }

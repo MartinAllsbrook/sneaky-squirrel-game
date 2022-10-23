@@ -8,7 +8,6 @@ public class Moving : BaseState
     private EnemyFSM _enemyFSM;
 
     public UnityEvent MoveEvent;
-
     public Moving(EnemyFSM stateMachine) : base("Moving", stateMachine) {
         _enemyFSM = stateMachine;
         if(MoveEvent == null) MoveEvent = new UnityEvent();
@@ -16,26 +15,17 @@ public class Moving : BaseState
 
     public override void Enter()
     {
+        // Debug.Log("endered moving state");
         base.Enter();
-        _notMoveing = false;
         MoveEvent.Invoke();
     }
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        if (_notMoveing)
-        {
-            var vectorToPlayer = PlayerController2D.Instance.transform.position - _enemyFSM.transform.position;
-            if (Vector3.Angle(vectorToPlayer, _enemyFSM.transform.up) < 45)
-            {
-                if (vectorToPlayer.magnitude < _enemyFSM.range) stateMachine.ChangeState(_enemyFSM.firingState);
-                else stateMachine.ChangeState(_enemyFSM.movingState);
-            }
-            else
-            {
-                stateMachine.ChangeState(_enemyFSM.idleState);
-            }
-        }
+        // Debug.Log(_enemyFSM.NotMoving);
+        if (!_enemyFSM.enemyController.AtEndOfPath && _enemyFSM.NotMoving) stateMachine.ChangeState(_enemyFSM.movingState);
+        else MoveOrFire(_enemyFSM);
+        // MoveOrFire(_enemyFSM);
     }
 }

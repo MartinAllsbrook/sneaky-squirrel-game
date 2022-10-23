@@ -5,9 +5,18 @@ using UnityEngine;
 public class EnemyFSM : StateMachine
 {
     [SerializeField] public EnemyController enemyController;
+    [SerializeField] public LayerMask canSee;
+
     [HideInInspector] public Idle idleState;
     [HideInInspector] public Moving movingState;
     [HideInInspector] public Firing firingState;
+    
+    private bool _notMoveing = true;
+    public bool NotMoving
+    {
+        get { return _notMoveing; }
+        set { _notMoveing = value; }
+    }
 
     private void Awake()
     {
