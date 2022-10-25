@@ -3,22 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController2D : MonoBehaviour
 {
     public static PlayerController2D Instance;
+
+    public UnityEvent CatnipEaten;
     
     [SerializeField] private CharacterController2D playerCharacterController2D;
     [SerializeField] private Animator playerAnimator;
     
     [SerializeField] private float speedMultiplier;
-    
+
     private float _horizontalMove = 0;
     private float _verticalMove = 0;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
+
+        if (CatnipEaten == null) CatnipEaten = new UnityEvent();
     }
 
     private void Update()
@@ -45,5 +50,16 @@ public class PlayerController2D : MonoBehaviour
     private void FixedUpdate()
     {
         playerCharacterController2D.Move(_horizontalMove, _verticalMove);
+    }
+    
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("Catnip"))
+        {
+            Destroy(col.gameObject);
+            UIController.Instance.AddScore();
+            CatnipEaten.Invoke();
+            
+        }
     }
 }
