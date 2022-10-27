@@ -11,9 +11,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] public AStarManager enemyAStarManager;
     [SerializeField] private EnemyFSM enemyFSM;
     [SerializeField] public LayerMask canSee;
-
-    [SerializeField] private bool ReachedEndOfPath;
-
+    
     [SerializeField] private float rotateSpeed;
 
     [SerializeField] private GameObject missilePrefab;

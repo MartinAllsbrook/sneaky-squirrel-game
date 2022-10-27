@@ -7,8 +7,6 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-
-    
     [SerializeField] private GameObject catnipPrefab;
     [SerializeField] private GameObject enemyPrefab;
     
@@ -20,7 +18,13 @@ public class GameController : MonoBehaviour
         new Vector3(15f, 5f, 0),
         new Vector3(-5f, 15f, 0),
         new Vector3(-15f, -5f, 0),
-        new Vector3(5f, -15f, 0)
+        new Vector3(5f, -15f, 0),
+        new Vector3(12, -6, 0),
+        new Vector3(6, 12, 0),
+        new Vector3(-12, 6, 0),
+        new Vector3(-6, -12, 0),
+
+
     };
 
     private Vector3[] _enemySpawns =
@@ -48,7 +52,7 @@ public class GameController : MonoBehaviour
 
     void OnCatnipEaten()
     {
-        var spawnNumber = Random.Range(0, 4);
+        var spawnNumber = Random.Range(0, 8);
         Instantiate(catnipPrefab, _catnipSpawns[spawnNumber], new Quaternion(0,0,0,0));
     }
 

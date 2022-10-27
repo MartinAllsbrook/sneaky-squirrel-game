@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
 
 public class UIController : MonoBehaviour
@@ -17,6 +19,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI scoreDisplay;
     [SerializeField] private Image healthBar;
+    [SerializeField] private GameObject gameOverScreen;
     
     private int _score;
     private int _health = 200;
@@ -25,6 +28,7 @@ public class UIController : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         if (SpawnEnemy == null) SpawnEnemy = new UnityEvent();
+        gameOverScreen.SetActive(false);
     }
 
     public void AddScore()
@@ -45,7 +49,20 @@ public class UIController : MonoBehaviour
         {
             _health = newHealth;
         }
+        else if (newHealth < 0)
+        {
+            _health = 0;
+        }
         var barTransform = healthBar.rectTransform;
         barTransform.sizeDelta = new Vector2 (_health, barTransform.sizeDelta.y);
+        if (_health <= 0 )
+        {
+            gameOverScreen.SetActive(true);
+        }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

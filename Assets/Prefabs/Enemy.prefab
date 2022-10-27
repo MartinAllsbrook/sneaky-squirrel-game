@@ -4956,10 +4956,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   ReachedEndOfPath: 0
-  rotateSpeed: 5
+  rotateSpeed: 20
   missilePrefab: {fileID: 2639446658540264184, guid: c2a5d083713504b41bd263435f9736d9,
     type: 3}
-  moveSpeed: 0.3
+  moveSpeed: 0.2
   AtEndOfPath: 0
 --- !u!114 &11186663103304347
 MonoBehaviour:
@@ -4988,7 +4988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c0658f5cab4ca45b6ed3e6b840d5d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
+  range: 4
   enemyController: {fileID: 11186663103304336}
   canSee:
     serializedVersion: 2

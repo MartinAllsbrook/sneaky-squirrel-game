@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,8 +13,8 @@ public class PlayerController2D : MonoBehaviour
     
     [SerializeField] private float speedMultiplier;
 
-    private float _horizontalMove = 0;
-    private float _verticalMove = 0;
+    private float _horizontalMove;
+    private float _verticalMove;
 
     private void Awake()
     {
