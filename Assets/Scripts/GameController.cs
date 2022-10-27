@@ -7,16 +7,28 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    private UnityEvent _catnipEaten;
 
+    
     [SerializeField] private GameObject catnipPrefab;
-
+    [SerializeField] private GameObject enemyPrefab;
+    
+    private UnityEvent _catnipEaten;
+    private UnityEvent _spawnEnemy;
+    
     private Vector3[] _catnipSpawns =
     {
         new Vector3(15f, 5f, 0),
         new Vector3(-5f, 15f, 0),
         new Vector3(-15f, -5f, 0),
         new Vector3(5f, -15f, 0)
+    };
+
+    private Vector3[] _enemySpawns =
+    {
+        new Vector3(15.5f, 15.5f, 0),
+        new Vector3(15.5f, -15.5f, 0),
+        new Vector3(-15.5f, -15.5f, 0),
+        new Vector3(-15.5f, 15.5f, 0)
     };
         // Start is called before the first frame update
     void Start()
@@ -26,14 +38,24 @@ public class GameController : MonoBehaviour
             _catnipEaten = PlayerController2D.Instance.CatnipEaten;
             _catnipEaten.AddListener(OnCatnipEaten);
         }
-        
+
+        if (_spawnEnemy == null)
+        {
+            _spawnEnemy = UIController.Instance.SpawnEnemy;
+            _spawnEnemy.AddListener(OnSpawnEnemy);
+        }
     }
 
     void OnCatnipEaten()
     {
         var spawnNumber = Random.Range(0, 4);
-        var location = new Vector3();
-        Debug.Log(spawnNumber);
-        Instantiate(catnipPrefab, _catnipSpawns[spawnNumber], new Quaternion(0, 0, 0, 0));
+        Instantiate(catnipPrefab, _catnipSpawns[spawnNumber], new Quaternion(0,0,0,0));
+    }
+
+    void OnSpawnEnemy()
+    {
+        Debug.Log("SpawnEnemy");
+        var spawnNumber = Random.Range(0, _enemySpawns.Length);
+        Instantiate(enemyPrefab, _enemySpawns[spawnNumber], new Quaternion(0, 0, 0, 0));
     }
 }

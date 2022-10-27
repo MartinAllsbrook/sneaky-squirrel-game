@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private AStarManager enemyAStarManager;
+    [SerializeField] public AStarManager enemyAStarManager;
     [SerializeField] private EnemyFSM enemyFSM;
     [SerializeField] public LayerMask canSee;
 
@@ -89,7 +89,10 @@ public class EnemyController : MonoBehaviour
 
     void OnMoveEvent()
     {
-        if (CanSeePlayer() > 0f) _currentPath = enemyAStarManager.GetPath(); // If we can see the player => Make a new path to the player
+        if (CanSeePlayer() > 0f)
+        {
+            _currentPath = enemyAStarManager.GetPath(); // If we can see the player => Make a new path to the player
+        }
         
         if (_lastPath == null)
         {
@@ -108,6 +111,7 @@ public class EnemyController : MonoBehaviour
             }
         }
         
+        Debug.Log(_pathLocation);
         if (_pathLocation == _lastPath.Count - 1) AtEndOfPath = true;
         else AtEndOfPath = false;
         var firstStep = _lastPath[_pathLocation];

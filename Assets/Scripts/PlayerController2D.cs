@@ -59,7 +59,16 @@ public class PlayerController2D : MonoBehaviour
             Destroy(col.gameObject);
             UIController.Instance.AddScore();
             CatnipEaten.Invoke();
-            
+            UIController.Instance.ChangeHealth(10);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Missile"))
+        {
+            Debug.Log("HIT");
+            UIController.Instance.ChangeHealth(-50);
         }
     }
 }

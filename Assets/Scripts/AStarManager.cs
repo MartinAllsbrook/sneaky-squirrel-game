@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class AStarManager : MonoBehaviour
 {
-    [SerializeField] private Tilemap walkableTilemap;
+    private Tilemap walkableTilemap;
     [SerializeField] private float moveTime;
     [SerializeField] private float numMoves;
     [SerializeField] private float baseStepAngle;
@@ -17,6 +17,12 @@ public class AStarManager : MonoBehaviour
     BoundsInt bounds;
     private Rigidbody2D _enemyRigidbody2D;
     private Vector2Int _currentTarget;
+
+    public Tilemap WalkableTilemap
+    {
+        get { return walkableTilemap; }
+        private set {}
+    }
 
     private Vector3Int GridPositionOfPlayer3D
     {
@@ -36,6 +42,7 @@ public class AStarManager : MonoBehaviour
     {
         if (_enemyRigidbody2D == null) _enemyRigidbody2D = gameObject.GetComponent<Rigidbody2D>();
 
+        walkableTilemap = GameObject.FindWithTag("Walkable Tilemap").GetComponent<Tilemap>();
         //Trims any empty cells from the edges of the tilemap
         walkableTilemap.CompressBounds();
         bounds = walkableTilemap.cellBounds;

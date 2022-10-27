@@ -15,7 +15,7 @@ public class Moving : BaseState
 
     public override void Enter()
     {
-        // Debug.Log("endered moving state");
+        // Debug.Log("entered moving state");
         base.Enter();
         MoveEvent.Invoke();
     }
@@ -24,7 +24,12 @@ public class Moving : BaseState
     {
         base.UpdateLogic();
         // Debug.Log(_enemyFSM.NotMoving);
-        if (!_enemyFSM.enemyController.AtEndOfPath && _enemyFSM.NotMoving) stateMachine.ChangeState(_enemyFSM.movingState);
+        var distanceToPlayer = _enemyFSM.enemyController.CanSeePlayer();
+        if (_enemyFSM.NotMoving && (distanceToPlayer > _enemyFSM.range || distanceToPlayer == 0))
+        {
+            if (!_enemyFSM.enemyController.AtEndOfPath) stateMachine.ChangeState(_enemyFSM.movingState);
+            else if (_enemyFSM.enemyController.AtEndOfPath) stateMachine.ChangeState(_enemyFSM.idleState);
+        }
         else MoveOrFire(_enemyFSM);
         // MoveOrFire(_enemyFSM);
     }
